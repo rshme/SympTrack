@@ -1,9 +1,16 @@
 // src/views/MapView.js
-import React from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import React, { useRef, useEffect, useState } from "react";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
+import useMarkerTracker from "../utils/MarkerTracker";
 
-const SurveyMapView = ({ data, onMarkerPress }) => {
+const SurveyMapView = ({ data, onMarkerPress, selectedItem }) => {
+  // Reference to the map view for animations
+  const mapRef = useRef(null);
+
+  // Use marker tracker to show movement history
+  const { MarkerTrails } = useMarkerTracker(selectedItem, 3);
+
   // Calculate the initial region based on the first data point
   // or default to a central US location
   const initialRegion =
@@ -21,20 +28,48 @@ const SurveyMapView = ({ data, onMarkerPress }) => {
           longitudeDelta: 50,
         };
 
+  // Animate to the selected item when it changes
+  useEffect(() => {
+    if (selectedItem && mapRef.current) {
+      // Log to verify coordinates are updating
+      console.log("Animating to:", selectedItem.coordinates);
+
+      mapRef.current.animateToRegion(
+        {
+          latitude: selectedItem.coordinates.latitude,
+          longitude: selectedItem.coordinates.longitude,
+          latitudeDelta: 0.0222,
+          longitudeDelta: 0.0121,
+        },
+        500
+      ); // 500ms animation duration
+    }
+  }, [
+    selectedItem?.id,
+    selectedItem?.coordinates.latitude,
+    selectedItem?.coordinates.longitude,
+  ]);
+
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={initialRegion}
       >
+        {/* Render marker movement trails */}
+        <MarkerTrails />
+
         {data.map((item) => (
           <Marker
-            key={item.id}
+            // Use a key that includes coordinates to force re-render when they change
+            key={`${item.id}-${item.coordinates.latitude}-${item.coordinates.longitude}`}
             coordinate={item.coordinates}
             title={item.name}
             description={item.address}
             onPress={() => onMarkerPress(item)}
+            pinColor={selectedItem?.id === item.id ? "blue" : "red"}
           />
         ))}
       </MapView>

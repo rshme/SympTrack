@@ -41,6 +41,25 @@ class SurveyController {
     return this.model.updateData(id, surveyData);
   }
 
+  // Randomize coordinates for a survey
+  randomizeCoordinates(id) {
+    // Get current data
+    const surveyData = this.model.getDataById(id);
+    if (!surveyData) return null;
+
+    const updatedData = {
+      coordinates: {
+        latitude: surveyData.coordinates.latitude,
+        longitude: surveyData.coordinates.longitude,
+      },
+    };
+
+    // Update and return the updated item
+    const updatedItem = this.model.updateData(id, updatedData);
+    console.log("Updated coordinates:", updatedItem.coordinates);
+    return updatedItem;
+  }
+
   // Delete a survey
   deleteSurvey(id) {
     this.model.deleteData(id);

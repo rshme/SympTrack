@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const SurveyListItem = ({ item, onPress }) => {
+const SurveyListItem = ({ item, onPress, isSelected }) => {
   return (
     <TouchableOpacity
-      style={styles.itemContainer}
+      style={[styles.itemContainer, isSelected && styles.selectedItem]}
       onPress={() => onPress(item)}
     >
       <Text style={styles.nameText}>{item.name}</Text>
@@ -71,6 +71,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
+  },
+  selectedItem: {
+    backgroundColor: "#e6f7ff",
+    borderWidth: 1,
+    borderColor: "#1890ff",
   },
   nameText: {
     fontSize: 16,
