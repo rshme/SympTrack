@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import AuthController from "../controllers/AuthController";
 

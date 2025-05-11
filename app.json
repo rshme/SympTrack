@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.rshme.SympTrack"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,7 +30,7 @@
       [
         "@react-native-google-signin/google-signin",
         {
-          "iosUrlScheme": "com.googleusercontent.apps.1048611951446-en0htr19s3629l58obthgc86dsetip8m"
+          "iosUrlScheme": "com.googleusercontent.apps.1048611951446-93fo3gud5i2bmshvmb48pdtqil8devrh"
         }
       ]
     ]

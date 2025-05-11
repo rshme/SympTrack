@@ -9,10 +9,9 @@ class AuthController {
   constructor() {
     // Initialize Google Sign-In
     GoogleSignin.configure({
-      webClientId: "1048611951446-2ef224u7n4us1m1qumkjrgrkh4l8reid.apps.googleusercontent.com",
-      iosClientId: "1048611951446-en0htr19s3629l58obthgc86dsetip8m.apps.googleusercontent.com",
-      offlineAccess: true, // if you need to access Google API on behalf of the user
-      forceCodeForRefreshToken: true, // needed for offline access
+      webClientId: "1048611951446-o5d3qk0cen96h4rspeu3r3d03jl13dgm.apps.googleusercontent.com",
+      iosClientId: "1048611951446-lom6bh5qncetcui91fpnhfhnd7n4i41g.apps.googleusercontent.com",
+      profileImageSize: 120
     });
   }
 
@@ -33,23 +32,25 @@ class AuthController {
     try {
       // Check if Google Play Services are available
       const playServicesCheck = await this.initGoogleSignIn();
+      console.log(playServicesCheck)
       if (!playServicesCheck.success) {
         return playServicesCheck;
       }
 
       // Sign in
-      await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo.data.user)
 
       // Save user to model
-      AuthModel.setUser(userInfo.user);
+      AuthModel.setUser(userInfo.data.user);
 
       // Save to AsyncStorage for persistence
-      await AsyncStorage.setItem("user", JSON.stringify(userInfo.user));
+      await AsyncStorage.setItem("user", JSON.stringify(userInfo.data.user));
 
-      return { success: true, user: userInfo.user };
+      return { success: true, user: userInfo.data.user };
     } catch (error) {
       console.error("Google Sign-In Error:", error);
+      console.error("Google Sign-In Error Code:", error.code);
 
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         return { success: false, error: "User cancelled the login flow" };
@@ -72,7 +73,7 @@ class AuthController {
   async checkExistingAuth() {
     try {
       // Check if signed in with Google
-      const isSignedIn = await GoogleSignin.isSignedIn();
+      const isSignedIn = false;
 
       if (isSignedIn) {
         // Get user info
