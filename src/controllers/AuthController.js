@@ -73,16 +73,11 @@ class AuthController {
   async checkExistingAuth() {
     try {
       // Check if signed in with Google
-      const isSignedIn = false;
-
-      if (isSignedIn) {
-        // Get user info
         const userInfo = await GoogleSignin.getCurrentUser();
         if (userInfo) {
           AuthModel.setUser(userInfo.user);
           return { success: true, user: userInfo.user };
         }
-      }
 
       // If not signed in with Google, check AsyncStorage as fallback
       const userData = await AsyncStorage.getItem("user");
@@ -102,10 +97,7 @@ class AuthController {
   async signOut() {
     try {
       // Sign out from Google
-      const isSignedIn = await GoogleSignin.isSignedIn();
-      if (isSignedIn) {
-        await GoogleSignin.signOut();
-      }
+      await GoogleSignin.signOut();
 
       // Clear local storage
       await AsyncStorage.removeItem("user");

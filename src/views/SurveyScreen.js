@@ -83,13 +83,13 @@ const SurveyScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <View style={styles.mapContainer}>
+      {/* <View style={styles.mapContainer}>
         <SurveyMapView
           data={surveyData}
           onMarkerPress={handleMarkerPress}
           selectedItem={selectedItem}
         />
-      </View>
+      </View> */}
       <View style={styles.listContainer}>
         <SurveyListView
           data={surveyData}
