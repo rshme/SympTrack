@@ -32,14 +32,12 @@ class AuthController {
     try {
       // Check if Google Play Services are available
       const playServicesCheck = await this.initGoogleSignIn();
-      console.log(playServicesCheck)
       if (!playServicesCheck.success) {
         return playServicesCheck;
       }
 
       // Sign in
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo.data.user)
 
       // Save user to model
       AuthModel.setUser(userInfo.data.user);
